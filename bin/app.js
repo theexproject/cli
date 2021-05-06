@@ -20,8 +20,8 @@ class app {
     }
 
     async start() {
-        console.log(figlet.textSync("Scripty", "Big Money-ne"));
-        console.log(`\n\nversion: ${pkg.version}`);
+        console.log(figlet.textSync("exscript", "Big Money-ne"));
+        console.log(`\n\n\tversion: ${pkg.version}`);
         await this.configurate();
         var config = this.config
         program.option("-r, --run", "run a script", "default").action((name) => {
