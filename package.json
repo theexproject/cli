@@ -6,6 +6,10 @@
   "scripts": {
     "test": "nodemon index.js -e js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sirtenzin/exscript.git"
+  },
   "keywords": [
     "cli",
     "script",
