@@ -1,5 +1,5 @@
 {
-  "name": "scripty",
+  "name": "scriptman",
   "version": "0.0.2",
   "description": "Advanced script saving system built on Node.js",
   "main": "index.js",
@@ -26,6 +26,6 @@
     "touch": "^3.1.0"
   },
   "bin": {
-    "scripty": "index.js"
+    "scriptman": "index.js"
   }
 }
