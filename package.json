@@ -1,0 +1,31 @@
+{
+  "name": "scripty",
+  "version": "0.0.2",
+  "description": "Advanced script saving system built on Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js -e js"
+  },
+  "keywords": [
+    "cli",
+    "script",
+    "custom"
+  ],
+  "author": "SirTenzin",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "clear": "^0.1.0",
+    "clui": "^0.3.6",
+    "colors": "^1.4.0",
+    "commander": "^7.2.0",
+    "configstore": "^6.0.0",
+    "figlet": "^1.5.0",
+    "inquirer": "^8.0.0",
+    "lodash": "^4.17.21",
+    "touch": "^3.1.0"
+  },
+  "bin": {
+    "scripty": "index.js"
+  }
+}
