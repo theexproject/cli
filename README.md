@@ -1,6 +1,13 @@
+# This Package is un-working, please wait for a new update!
 # EXScript
 
 A simply overloaded "npm run"!
+
+# Installation
+
+```
+npm i -g exscript
+```
 
 # Usage
 

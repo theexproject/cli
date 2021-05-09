@@ -53,19 +53,8 @@ class app {
     }
 
     async configurate() {
-        var config = {
-            "version": 1,
-            "scripts": {
-                "default": {
-                    "name": "default",
-                    "run": {
-                        "type": "default",
-                        "command": "echo \"hello\""
-                    }
-                }
-            }
-        }
-
+        var config;
+        console.log('owo');
         const fs = require("fs");
         if (!fs.existsSync(configdir)) {
             fs.mkdirSync(configdir, (err) => {
@@ -73,7 +62,18 @@ class app {
                     throw err;
                 } else {
                     if (!fs.existsSync(path.join(configdir, 'scripts.json'))) {
-                        fs.writeFileSync(path.join(configdir, 'scripts.json'), JSON.stringify(config), (err) => {
+                        fs.writeFileSync(path.join(configdir, 'scripts.json'), JSON.stringify({
+                            "version": 1,
+                            "scripts": {
+                                "default": {
+                                    "name": "default",
+                                    "run": {
+                                        "type": "default",
+                                        "command": "echo \"hello\""
+                                    }
+                                }
+                            }
+                        }), (err) => {
                             if (err) {
                                 throw err;
                             } else {
@@ -85,7 +85,18 @@ class app {
             })
         } else {
             if (!fs.existsSync(path.join(configdir, 'scripts.json'))) {
-                fs.writeFileSync(path.join(configdir, 'scripts.json'), JSON.stringify(config), (err) => {
+                fs.writeFileSync(path.join(configdir, 'scripts.json'), JSON.stringify({
+                    "version": 1,
+                    "scripts": {
+                        "default": {
+                            "name": "default",
+                            "run": {
+                                "type": "default",
+                                "command": "echo \"hello\""
+                            }
+                        }
+                    }
+                }), (err) => {
                     if (err) {
                         throw err;
                     } else {
