@@ -1,6 +1,6 @@
 {
   "name": "exscript",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Advanced script saving system built on Node.js",
   "main": "index.js",
   "scripts": {
