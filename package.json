@@ -1,13 +1,14 @@
 {
   "name": "exscript",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Advanced script saving system built on Node.js",
   "main": "index.js",
   "scripts": {
     "test": "nodemon index.js -e js",
     "git:push": "git add . && git commit -m \"auto commit\" && git push",
     "npm:publish": "yarn publish",
-    "bundle": "npm run git:push && npm run npm:publish"
+    "bundle": "npm run git:push && npm run npm:publish",
+    "loop": "npm run loop"
   },
   "repository": {
     "type": "git",

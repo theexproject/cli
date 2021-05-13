@@ -2,10 +2,12 @@
 const figlet = require('figlet');
 const pkg = require('../package.json');
 const os = require("os");
+const fs = require("fs");
 const { exec } = require("child_process")
-var configdir = require("path").join(os.homedir() + "/.scripty");
+var configdir = require("path").join(process.cwd() + "/.scripty/");
 const path = require('path');
 const program = require('commander');
+const { join } = require('path');
 program.version(pkg.version)
 
 class app {
@@ -17,103 +19,68 @@ class app {
 
     constructor(args) {
         this.args = args;
+        if(!fs.existsSync(join(configdir, "scripts.json"))) {
+            this.configurate().then(() => {
+                this.config = require(join(configdir +  'scripts.json'))
+            })
+        } else {
+            this.config = require(join(configdir +  'scripts.json'))
+        }
     }
 
     async start() {
         console.log(figlet.textSync("exscript", "Big Money-ne"));
-        console.log(`\n\n\tversion: ${pkg.version}`);
-        await this.configurate();
-        var config = this.config
-        program.option("-r, --run", "run a script", "default").action((name) => {
-            if(config.scripts[name.run]) {
-                var x = config.scripts[name.run]
+        console.log(`\n\nversion: ${pkg.version}`);
+        process.on("beforeExit", () => {
+            fs.writeFile(join(configdir, "scripts.json"), JSON.stringify(require("./templates/scripts.json"), null, 4), () => {
+                this.config = require(join(configdir +  'scripts.json'))
+            })
+        })
+        program.command("run <name>").description("run a script").action((name) => {
+            if(!name) return;
+            console.log(`running`, name)
+            if (this.config.scripts[name]) {
+                var x = this.config.scripts[name]
                 this.sh(x.run.command).then((put) => {
-                    if(put.stderr != '') {
-                        console.log(stderr) 
+                    if (put.stderr != '') {
+                        console.log(stderr)
+                        process.exit()
                     } else {
                         console.log(put.stdout)
+                        process.exit()
                     }
                 })
-            }
-        })
-
-        program.command("config").option("-e, --explorer", "open in explorer").description("opens config").action((opts) => {
-            if(!opts.explorer) {
-                this.sh(`notepad ${path.join(configdir, "scripts.json")}`).then(console.log("done"))
             } else {
-                this.sh(`explorer ${path.join(configdir)}`).then(console.log("done"))
+                console.log("Not Found")
+                process.exit()
             }
         })
 
-        program.command("reload").description("reload config").action(() => {
-            this.configurate()
+        program.command("this.config").option("-e, --explorer", "open in explorer").description("opens this.config").action((opts) => {
+            if (!opts.explorer) {
+                this.sh(`notepad ${path.join(this.configdir, "scripts.json")}`).then(console.log("done"))
+            } else {
+                this.sh(`explorer ${path.join(this.configdir)}`).then(console.log("done"))
+            }
+        })
+
+        program.command("reload").description("reload this.config").action(() => {
+            this.configurate().then(() => {
+                process.exit();
+            })
         })
 
         program.parse(this.args);
     }
 
     async configurate() {
-        var config;
-        console.log('owo');
-        const fs = require("fs");
-        if (!fs.existsSync(configdir)) {
-            fs.mkdirSync(configdir, (err) => {
-                if (err) {
-                    throw err;
-                } else {
-                    if (!fs.existsSync(path.join(configdir, 'scripts.json'))) {
-                        fs.writeFileSync(path.join(configdir, 'scripts.json'), JSON.stringify({
-                            "version": 1,
-                            "scripts": {
-                                "default": {
-                                    "name": "default",
-                                    "run": {
-                                        "type": "default",
-                                        "command": "echo \"hello\""
-                                    }
-                                }
-                            }
-                        }), (err) => {
-                            if (err) {
-                                throw err;
-                            } else {
-                                console.log("Saved first Config!")
-                            }
-                        })
-                    }
-                }
+        try {
+            this.config = require(join(configdir +  'scripts.json'))
+        } catch (e) {
+            fs.writeFile(join(configdir, "scripts.json"), JSON.stringify(require("./templates/scripts.json"), null, 4), () => {
+                this.config = require(join(configdir +  'scripts.json'))
             })
-        } else {
-            if (!fs.existsSync(path.join(configdir, 'scripts.json'))) {
-                fs.writeFileSync(path.join(configdir, 'scripts.json'), JSON.stringify({
-                    "version": 1,
-                    "scripts": {
-                        "default": {
-                            "name": "default",
-                            "run": {
-                                "type": "default",
-                                "command": "echo \"hello\""
-                            }
-                        }
-                    }
-                }), (err) => {
-                    if (err) {
-                        throw err;
-                    } else {
-                        console.log("Saved first Config!")
-                    }
-                })
-            } else {
-                fs.readFileSync(path.join(configdir, 'scripts.json'), (err, data) => {
-                    if (err) {
-                        throw err
-                    } else {
-                        config = JSON.parse(data)
-                    }
-                })
-            }
         }
-        this.config = config;
     }
 
     async sh(cmd) {

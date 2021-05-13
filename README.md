@@ -1,4 +1,3 @@
-# This Package is un-working, please wait for a new update!
 # EXScript
 
 A simply overloaded "npm run"!
@@ -14,7 +13,7 @@ npm i -g exscript
 [] = optional, <> = required
 
 #### Editing Scripts
-$Windows_HOMEDIR/.scripty/scripts.json is where we store scripts.
+$NODE_Global_Pacakages/exscript/.scripty/scripts.json is where we store scripts.
 
 ```
 exscript config [-e]
@@ -34,6 +33,4 @@ exscript reload
 
 # ToDo
 
-- [ ] Create Config V2 with script types
-- [ ] Fix Config reload broken
-- [ ] Cross OS Compatibility (currently written for windows)
+[Moved to Repo > Projects > Roadmap > To Do](https://github.com/theexproject/cli/projects/1#column-14231003)

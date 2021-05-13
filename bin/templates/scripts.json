@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "scripts": {
+        "default": {
+            "name": "default",
+            "run": {
+                "type": "default",
+                "command": "echo \"hello\""
+            }
+        }
+    }
+}
