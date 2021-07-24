@@ -1,6 +1,6 @@
 {
   "name": "exscript",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Advanced script saving system built on Node.js",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,9 @@
     "git:push": "git add . && git commit -m \"auto commit\" && git push",
     "npm:publish": "yarn publish",
     "bundle": "npm run git:push && npm run npm:publish",
-    "loop": "npm run loop"
+    "loop": "npm run loop",
+    "test:pty": "nodemon ./tests/pty.test.js",
+    "test:cmd": "nodemon ./tests/cmd.test.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,12 @@
   "keywords": [
     "cli",
     "script",
-    "custom"
+    "custom",
+    "npm",
+    "npm run",
+    "scripts",
+    "scripting",
+    "terminal"
   ],
   "author": "SirTenzin",
   "license": "MIT",
@@ -26,14 +33,20 @@
     "clear": "^0.1.0",
     "clui": "^0.3.6",
     "colors": "^1.4.0",
+    "colours": "^0.6.0-2",
     "commander": "^7.2.0",
+    "config": "^3.3.6",
     "configstore": "^6.0.0",
     "figlet": "^1.5.0",
     "inquirer": "^8.0.0",
     "lodash": "^4.17.21",
+    "nconf": "^0.11.3",
+    "node-cmd": "^4.0.0",
+    "node-pty": "^0.10.1",
     "touch": "^3.1.0"
   },
   "bin": {
-    "exscript": "index.js"
+    "exscript": "index.js",
+    "exs-temp": "tmp/cli.test.js"
   }
 }
