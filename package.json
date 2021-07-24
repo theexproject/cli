@@ -1,6 +1,6 @@
 {
   "name": "exscript",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "config": {
     "stable": "1",
     "beta": "1.1"
@@ -46,7 +46,6 @@
     "lodash": "^4.17.21",
     "nconf": "^0.11.3",
     "node-cmd": "^4.0.0",
-    "node-pty": "^0.10.1",
     "touch": "^3.1.0"
   },
   "bin": {
