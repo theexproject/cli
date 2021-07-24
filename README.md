@@ -18,7 +18,7 @@ npm i -g exscript
 
 [] = optional, <> = required
 
-#### ✍️ Editing Scripts
+✍️ Editing Scripts
 $NODE_Global_Pacakages/exscript/.scripty/scripts.json is where we store scripts.
 
 ```

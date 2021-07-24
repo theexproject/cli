@@ -11,7 +11,7 @@ class Logger {
      * @function
      */
     error(msg) {
-        return console.log(colours.red(`[error]: ${msg}`));
+        return console.log(colours.red(`[error]: `) + msg);
     }
 
     /**
@@ -21,7 +21,7 @@ class Logger {
      * @function
      */
     info(msg) {
-        return console.log(colours.blue(`[info]: ${msg}`));
+        return console.log(colours.blue(`[info]: `) + msg);
     }
 
     /**
@@ -31,7 +31,7 @@ class Logger {
      * @function
      */
     success(msg) {
-        return console.log(colours.green(`[success]: ${msg}`));
+        return console.log(colours.green(`[success]: `) + msg);
     }
 
     /**
@@ -41,7 +41,7 @@ class Logger {
      * @function
      */
     warn(msg) {
-        return console.log(colours.yellow(`[warn]: ${msg}`));
+        return console.log(colours.yellow(`[warn]: `) + msg);
     }
 
 }
