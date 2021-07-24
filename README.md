@@ -2,6 +2,8 @@
 
 <p align="center">
   <img src="./assets/cover.png" alt="EXScript" />
+  <h5 align="center">icon made by <a href="https://dribbble.com/ni">geometrieva</a></h5>
+  <h5 align="center">font made by <a href="https://www.abstrkt.world/">ABSTRKT</a></h5>
 </p>
 
 # ℹ️ About
