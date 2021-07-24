@@ -49,7 +49,6 @@
     "touch": "^3.1.0"
   },
   "bin": {
-    "exscript": "index.js",
-    "exs-temp": "tmp/cli.test.js"
+    "exscript": "index.js"
   }
 }
