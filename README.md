@@ -1,36 +1,42 @@
 # EXScript
 
-A simply overloaded "npm run"!
+<p align="center">
+  <img src="./assets/cover.png" alt="EXScript" />
+</p>
 
-# Installation
+# ℹ️ About
+
+EXScript is an easy to use, easy to install npm package to supercharge your "npm run" experience. Not only is it for node, its global. It can run any binary in your PATH through a seemless child process stdio relay.
+
+# 📥 Installation
 
 ```
 npm i -g exscript
 ```
 
-# Usage
+# 🔧 Usage
 
 [] = optional, <> = required
 
-#### Editing Scripts
+#### ✍️ Editing Scripts
 $NODE_Global_Pacakages/exscript/.scripty/scripts.json is where we store scripts.
 
 ```
 exscript config [-e]
 // (-e opens in explorer)
 ```
-#### Running Scripts
+#### 🔘 Running Scripts
 ```
-exscript -r <name|default:default>
+exscript run <name>
 // default: echo \"hello\"
 ```
 
-#### Reloading Config
+#### 🔄 Reloading Config
 
 ```
 exscript reload
 ```
 
-# ToDo
+# 📜 ToDo
 
-[Moved to Repo > Projects > Roadmap > To Do](https://github.com/theexproject/cli/projects/1#column-14231003)
+[Moved to GitHub.](https://github.com/theexproject/cli/projects/1#column-14231003)

@@ -1,13 +1,12 @@
 #! /usr/bin/env node
-const figlet = require('figlet');
-const pkg = require('../package.json');
-const os = require("os");
-const fs = require("fs");
-const { exec } = require("child_process")
-var configdir = require("path").join(process.cwd() + "/.scripty/");
-const path = require('path');
-const program = require('commander');
-const { join } = require('path');
+const figlet    = require('figlet');
+const pkg       = require('../package.json');
+const os        = require("os");
+const fs        = require("fs");
+const nconf     = require("nconf");
+const path      = require('path');
+const program   = require('commander');
+const Logger    = require('./Logger');
 program.version(pkg.version)
 
 class app {
@@ -19,44 +18,48 @@ class app {
 
     constructor(args) {
         this.args = args;
-        if(!fs.existsSync(join(configdir, "scripts.json"))) {
-            this.configurate().then(() => {
-                this.config = require(join(configdir +  'scripts.json'))
-            })
-        } else {
-            this.config = require(join(configdir +  'scripts.json'))
-        }
+        this.configurate();
+
+        // Save Configuration
+        process.on("beforeExit", () => {
+            this.config.save()
+        })
     }
 
     async start() {
-        console.log(figlet.textSync("exscript", "Big Money-ne"));
-        console.log(`\n\nversion: ${pkg.version}`);
-        process.on("beforeExit", () => {
-            fs.writeFile(join(configdir, "scripts.json"), JSON.stringify(require("./templates/scripts.json"), null, 4), () => {
-                this.config = require(join(configdir +  'scripts.json'))
-            })
-        })
-        program.command("run <name>").description("run a script").action((name) => {
-            if(!name) return;
-            console.log(`running`, name)
-            if (this.config.scripts[name]) {
-                var x = this.config.scripts[name]
-                this.sh(x.run.command).then((put) => {
-                    if (put.stderr != '') {
-                        console.log(stderr)
+        this.loglogo()
+        console.log(`version: ${pkg.version}`);
+
+        program.command("run <script>")
+            .description("bruh").option("-a, --arguments")
+            .action(async(name, args) => {
+                if(!name) return Logger.error(`provide a script name`);
+                if (this.config.get(`scripts:${name}`)) {
+                    var x = this.config.get(`scripts:${name}`)
+                    console.log(x)
+                    console.log(`running ${name}`) 
+                    console.log(`$ ${x.run}`)
+                    var cmdBootstrap = await this.sh(x.run);
+
+                    cmdBootstrap.stdout.on("data", function (data) {
+                        process.stdout.write(data)
+                    })
+
+                    cmdBootstrap.on("close", function () {
+                        Logger.success("completed task")
                         process.exit()
-                    } else {
-                        console.log(put.stdout)
-                        process.exit()
-                    }
-                })
-            } else {
-                console.log("Not Found")
-                process.exit()
-            }
+                    })
+            
+                    process.stdin.on("data", function (data) {
+                        cmdBootstrap.stdin.write(data)
+                    })
+                } else {
+                    Logger.error(`script not found`);
+                    process.exit()
+                }
         })
 
-        program.command("this.config").option("-e, --explorer", "open in explorer").description("opens this.config").action((opts) => {
+        program.command("config").option("-e, --explorer", "open in explorer").description("opens the config").action((opts) => {
             if (!opts.explorer) {
                 this.sh(`notepad ${path.join(this.configdir, "scripts.json")}`).then(console.log("done"))
             } else {
@@ -64,7 +67,7 @@ class app {
             }
         })
 
-        program.command("reload").description("reload this.config").action(() => {
+        program.command("reload").description("reload config").action(() => {
             this.configurate().then(() => {
                 process.exit();
             })
@@ -74,27 +77,57 @@ class app {
     }
 
     async configurate() {
-        try {
-            this.config = require(join(configdir +  'scripts.json'))
-        } catch (e) {
-            fs.writeFile(join(configdir, "scripts.json"), JSON.stringify(require("./templates/scripts.json"), null, 4), () => {
-                this.config = require(join(configdir +  'scripts.json'))
-            })
+        nconf.file({ file: './.exs/scripts.json' });
+        this.config = nconf
+
+        nconf.defaults({
+            "settings": {},
+            "scripts": {
+                "default": {
+                    "type": "default",
+                    "run": "echo EXScript, working clean."
+                }
+            }
+        })
+    }
+
+    loglogo() {
+        if(typeof this.config.get("settings") !== 'undefined') {
+
+            if(typeof this.config.get("settings:noLogLogo") !== 'undefined') {
+                return console.log("exscript")
+            } 
+            if(this.config.get("settings:color") !== 'undefined') {
+                switch(this.config.get("settings:color")) {
+                    case "red": {           
+                        console.log(figlet.textSync("exscript", "Big Money-ne").red);
+                    } break;
+                    case "green": {
+                        console.log(figlet.textSync("exscript", "Big Money-ne").green);
+                    } break;
+                    case "yellow": {
+                        console.log(figlet.textSync("exscript", "Big Money-ne").yellow);
+                    } break; 
+                    case "blue": {
+                        console.log(figlet.textSync("exscript", "Big Money-ne").blue);
+                    } break;
+                    default: {
+                        console.log(figlet.textSync("exscript", "Big Money-ne"));
+                    } break;
+                }
+            } else {
+                console.log(figlet.textSync("exscript", "Big Money-ne"));
+            }
         }
     }
 
-    async sh(cmd) {
-        return new Promise(function (resolve, reject) {
-            exec(cmd, (err, stdout, stderr) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve({ stdout, stderr });
-                }
-            });
-        });
-    }
+    async sh(script) {
+        var cmd = require("node-cmd");
 
+        var cmdBootstrap = cmd.run(`${script}`, function (err, data, stderr) {});
+
+        return cmdBootstrap;
+    }
 }
 
 module.exports = app

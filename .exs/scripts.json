@@ -1,0 +1,9 @@
+{
+  "settings": {},
+  "scripts": {
+    "default": {
+      "type": "default",
+      "run": "echo EXScript, working clean."
+    }
+  }
+}
